@@ -31,7 +31,7 @@
 - ✅ **Owners** + **Owner Profile** (Module 2) — directory with search/filter; profile shows identity & contact, **Emirates ID (masked PII + reveal-with-audit)**, ID-document verification tiles, and linked Salukis (cross-linked with Saluki Profile)
 - ✅ **Registration Queue** — status filter tabs + live counts, review list, slide-in drawer with document checklist & photos, Approve / Request Info / Reject (updates status)
 - ✅ **Competitions** — events calendar cards, championship leaderboard (medal ranks), participation-by-type chart
-- ✅ **Breeder Registry** — licensed kennels table + litter registry + featured-litter puppies
+- ✅ **Breeder Registry** — licensed kennels table + litter registry + featured-litter puppies; **functional Register-Litter wizard** (3 steps: parentage with sire/dam verification → litter details → per-puppy temp IDs) that adds to the table and updates stats
 - ✅ **DNA Verification** — records table with sire/dam parentage match cells + Confirmed/Pending/Disputed status
 - ✅ **Analytics** — 6 charts (trend line, emirate/age/participation bars, breed/compliance donuts) + demographics + exportable reports
 - ✅ **Members** — KPI strip, search + tier/status filters, directory table with tier badges & renewal dates

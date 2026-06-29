@@ -214,3 +214,83 @@ ASC.openEventModal = function () {
     if (ASC.refreshCompetitionEvents) ASC.refreshCompetitionEvents();
   });
 };
+
+/* ----------------------------- Register a litter ----------------------------- */
+ASC.openLitterModal = function () {
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const COLORS = ['Golden', 'Cream', 'Tan', 'White', 'Brown', 'Black', 'Fawn', 'Grizzle'];
+  const S = ASC.data.salukis;
+  const males = S.filter((s) => s.sex === 'Male' && s.status === 'Approved');
+  const females = S.filter((s) => s.sex === 'Female' && s.status === 'Approved');
+  const STEPS = ['Parentage', 'Litter', 'Puppies'];
+  const state = {};
+  let step = 1; const total = 3;
+  const fld = (l, el, full) => '<div class="field' + (full ? ' full' : '') + '"><label>' + l + '</label>' + el + '</div>';
+  const opts = (arr, fmt) => arr.map((x) => '<option>' + fmt(x) + '</option>').join('');
+  const fmtDate = (ds) => { if (!ds) return '—'; const p = ds.split('-'); return parseInt(p[2], 10) + ' ' + (MONTHS[parseInt(p[1], 10) - 1] || '') + ' ' + p[0]; };
+
+  const ov = ASC.openModal({ title: 'Register a Litter', size: 'lg',
+    body: '<div id="ltBody"></div>',
+    foot: '<span class="dim" id="ltInfo" style="font-size:12.5px"></span><div style="margin-inline-start:auto;display:flex;gap:8px"><button class="btn btn-ghost" id="ltBack">Back</button><button class="btn btn-gold" id="ltNext">Continue</button></div>' });
+  const body = ov.querySelector('#ltBody'), back = ov.querySelector('#ltBack'), next = ov.querySelector('#ltNext'), info = ov.querySelector('#ltInfo');
+  const val = (sel) => { const el = body.querySelector(sel); return el ? el.value : ''; };
+
+  function stepper() {
+    let h = '<div class="stepper">';
+    STEPS.forEach((s, i) => {
+      const n = i + 1, cls = n === step ? 'active' : n < step ? 'done' : '';
+      h += '<div class="stp ' + cls + '"><span class="num">' + (n < step ? '✓' : n) + '</span><span class="lbl">' + s + '</span></div>';
+      if (i < STEPS.length - 1) h += '<span class="stp-bar' + (n < step ? ' done' : '') + '"></span>';
+    });
+    return h + '</div>';
+  }
+  function content() {
+    if (step === 1) return '<div class="form-grid">' +
+      fld('Kennel <span class="req">*</span>', '<select id="ltKennel">' + opts(ASC.data.breeders, (k) => k.kennel) + '</select>') +
+      fld('Mating Date', '<input id="ltMating" type="date">') +
+      fld('Sire — Father <span class="req">*</span>', '<select id="ltSire">' + opts(males, (s) => s.nameEn + ' — ' + s.reg) + '</select>') +
+      fld('Dam — Mother <span class="req">*</span>', '<select id="ltDam">' + opts(females, (s) => s.nameEn + ' — ' + s.reg) + '</select>') +
+      '</div><div class="iddoc" style="margin-top:16px;background:var(--success-tint);border-color:rgba(39,174,96,.3)"><span class="di" style="background:rgba(39,174,96,.18);color:var(--success)">' + ASC.icon('check') + '</span><div class="dt"><b>Parent verification passed</b><span>Both sire and dam are approved Salukis in the national registry.</span></div></div>';
+    if (step === 2) return '<div class="form-grid">' +
+      fld('Birth Date <span class="req">*</span>', '<input id="ltBorn" type="date">') +
+      fld('Number of Puppies <span class="req">*</span>', '<input id="ltCount" type="number" min="1" max="12" value="4">') +
+      fld('Genetic Screening', '<select id="ltScreen"><option>Complete</option><option>Pending</option><option>Not started</option></select>') +
+      fld('Screening Notes', '<textarea id="ltNotes" placeholder="e.g. No hereditary conditions detected"></textarea>', true) +
+      '</div>';
+    // step 3 — one row per puppy with auto temp IDs
+    const count = Math.max(1, Math.min(12, parseInt(state.count || '4', 10)));
+    let rows = '';
+    for (let i = 0; i < count; i++) {
+      const pid = 'PUP-2026-' + String(91 + i).padStart(5, '0');
+      rows += '<div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px">' +
+        '<div class="field" style="flex:1;min-width:150px"><label>Puppy ' + (i + 1) + ' · <span class="mono">' + pid + '</span></label><input class="ltPupName" type="text" placeholder="Name"></div>' +
+        '<div class="field" style="width:110px"><label>Sex</label><select class="ltPupSex"><option>Male</option><option>Female</option></select></div>' +
+        '<div class="field" style="width:130px"><label>Colour</label><select class="ltPupColor">' + opts(COLORS, (c) => c) + '</select></div></div>';
+    }
+    return '<div class="dim" style="font-size:12.5px;margin-bottom:14px">Each puppy receives a temporary ID and inherits the parents’ pedigree automatically. Full registration is triggered when a microchip is implanted.</div>' + rows;
+  }
+  function render() {
+    body.innerHTML = stepper() + content();
+    info.textContent = 'Step ' + step + ' of ' + total + ' · ' + STEPS[step - 1];
+    back.style.visibility = step === 1 ? 'hidden' : 'visible';
+    next.innerHTML = step === total ? '<span class="icn" data-icon="check"></span>Register Litter' : 'Continue';
+    ASC.hydrateIcons(body); ASC.hydrateIcons(next);
+  }
+  back.addEventListener('click', () => { if (step > 1) { step--; render(); } });
+  next.addEventListener('click', () => {
+    if (step === 1) { state.kennel = val('#ltKennel'); state.mating = val('#ltMating'); state.sire = val('#ltSire'); state.dam = val('#ltDam'); step = 2; render(); return; }
+    if (step === 2) { state.born = val('#ltBorn'); state.count = val('#ltCount'); state.screen = val('#ltScreen'); state.notes = val('#ltNotes'); step = 3; render(); return; }
+    // submit
+    const count = Math.max(1, Math.min(12, parseInt(state.count || '4', 10)));
+    const id = 'LIT-2026-' + String(30 + ASC.data.litters.length).padStart(4, '0');
+    const sire = (state.sire || '').split(' — ')[0], dam = (state.dam || '').split(' — ')[0];
+    ASC.data.litters.unshift({ id: id, kennel: state.kennel, sire: sire, dam: dam, born: fmtDate(state.born), puppies: count, screening: state.screen || 'Pending', status: 'Registered' });
+    const names = body.querySelectorAll('.ltPupName'), sexes = body.querySelectorAll('.ltPupSex'), cols = body.querySelectorAll('.ltPupColor');
+    for (let i = 0; i < count; i++) ASC.data.puppies.unshift({ id: 'PUP-2026-' + String(91 + i).padStart(5, '0'), name: (names[i] && names[i].value) || 'Puppy ' + (i + 1), sex: sexes[i] ? sexes[i].value : 'Male', color: cols[i] ? cols[i].value : 'Golden' });
+    const br = ASC.data.breeders.find((b) => b.kennel === state.kennel); if (br) br.litters++;
+    ASC.closeModal();
+    ASC.toast('Litter registered · ' + count + ' puppies · ' + id, 'paw');
+    if (ASC.refreshBreeder) ASC.refreshBreeder();
+  });
+  render();
+};
