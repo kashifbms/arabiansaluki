@@ -1,0 +1,57 @@
+/* =====================================================================
+   Sign-in screen — full-screen gate shown before the dashboard
+   ===================================================================== */
+#login {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+  background: var(--bg);
+  transition: opacity .32s var(--ease), visibility .32s var(--ease);
+}
+/* when authenticated, fade the gate out (no transition on initial load) */
+html.authed #login { opacity: 0; visibility: hidden; pointer-events: none; }
+
+#login::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(720px 520px at 50% -8%, var(--bg-glow), transparent 70%),
+    radial-gradient(520px 420px at 100% 110%, var(--bg-glow), transparent 72%);
+}
+
+.login-card {
+  position: relative; width: min(404px, 100%);
+  background: var(--card); border: 1px solid var(--border-soft); border-radius: 22px;
+  padding: 34px 30px; box-shadow: var(--shadow);
+}
+.login-head { text-align: center; margin-bottom: 22px; }
+.login-logo { width: 68px; height: 68px; border-radius: 50%; margin: 0 auto 14px; box-shadow: 0 6px 18px rgba(0,0,0,.28); }
+.login-title { font-family: var(--font-display); font-weight: 800; font-size: 19px; letter-spacing: .2px; }
+.login-sub { font-size: 11px; letter-spacing: .6px; text-transform: uppercase; color: var(--text-3); margin-top: 3px; }
+.login-welcome { font-size: 14px; color: var(--text-2); text-align: center; margin-bottom: 20px; }
+
+.lf-field { margin-bottom: 14px; }
+.lf-field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+.lf-input { display: flex; align-items: center; gap: 9px; border: 1px solid var(--border); border-radius: var(--r-input); padding: 0 12px; height: 44px; background: var(--card-2); transition: border-color var(--t-fast), box-shadow var(--t-fast); }
+.lf-input:focus-within { border-color: var(--brand-gold); box-shadow: var(--ring); }
+.lf-input > .icn { width: 17px; height: 17px; color: var(--text-3); flex-shrink: 0; }
+.lf-input input { flex: 1; min-width: 0; border: none; background: none; outline: none; font-size: 14px; color: var(--text); }
+.lf-eye { color: var(--text-3); display: grid; place-items: center; padding: 4px; }
+.lf-eye .icn { width: 17px; height: 17px; }
+.lf-eye:hover { color: var(--brand-gold); }
+
+.lf-row { display: flex; align-items: center; justify-content: space-between; margin: 6px 0 18px; font-size: 12.5px; }
+.lf-remember { display: inline-flex; align-items: center; gap: 7px; color: var(--text-2); cursor: pointer; }
+.lf-remember input { width: 15px; height: 15px; accent-color: var(--brand-gold); }
+.lf-forgot { color: var(--brand-gold); cursor: pointer; font-weight: 500; }
+.lf-forgot:hover { text-decoration: underline; }
+
+.lf-error { color: var(--error); background: var(--error-tint); border-radius: 10px; font-size: 12.5px; padding: 9px 12px; margin-bottom: 14px; display: none; }
+.lf-error.show { display: block; }
+.lf-submit { width: 100%; height: 46px; font-size: 14px; }
+.lf-hint { text-align: center; font-size: 12px; color: var(--text-3); margin-top: 18px; padding-top: 15px; border-top: 1px solid var(--border-soft); }
+.lf-hint b { color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+.login-foot { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; font-size: 11.5px; color: var(--text-3); }
+.login-theme { position: absolute; top: 20px; inset-inline-end: 20px; }
+
+.login-card.shake { animation: lshake .4s var(--ease); }
+@keyframes lshake { 10%,90%{transform:translateX(-1px)} 20%,80%{transform:translateX(2px)} 30%,50%,70%{transform:translateX(-5px)} 40%,60%{transform:translateX(5px)} }

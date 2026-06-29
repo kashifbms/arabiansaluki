@@ -1,0 +1,107 @@
+/* =====================================================================
+   Modals — generic dialog, wizard, forms, passport + print styles
+   ===================================================================== */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center;
+  padding: 24px; background: rgba(0,0,0,.55); backdrop-filter: blur(2px);
+  opacity: 0; pointer-events: none; transition: opacity var(--t);
+}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal {
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: 18px;
+  width: min(560px, 100%); max-height: 88vh; display: flex; flex-direction: column;
+  box-shadow: var(--shadow); overflow: hidden; transform: translateY(14px) scale(.98); transition: transform var(--t);
+}
+.modal.lg { width: min(700px, 100%); }
+.modal-overlay.open .modal { transform: none; }
+.modal-head { display: flex; align-items: center; justify-content: space-between; padding: 17px 22px; border-bottom: 1px solid var(--border-soft); }
+.modal-title { font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+.modal-body { padding: 22px; overflow-y: auto; }
+.modal-foot { padding: 15px 22px; border-top: 1px solid var(--border-soft); display: flex; gap: 10px; align-items: center; }
+
+/* ---- forms ---- */
+.form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field.full { grid-column: 1 / -1; }
+.field label { font-size: 12px; font-weight: 600; color: var(--text-2); }
+.field label .req { color: var(--brand-gold); }
+.field input, .field select, .field textarea {
+  height: 40px; padding: 0 12px; border-radius: var(--r-input); border: 1px solid var(--border);
+  background: var(--card); color: var(--text); font: inherit; font-size: 13.5px; transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.field textarea { height: auto; min-height: 62px; padding: 10px 12px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--brand-gold); box-shadow: var(--ring); }
+.field .hint { font-size: 11.5px; color: var(--text-3); }
+.field input[dir="rtl"] { font-family: var(--font-arabic); }
+
+/* ---- stepper ---- */
+.stepper { display: flex; align-items: center; gap: 8px; margin-bottom: 22px; }
+.stp { display: inline-flex; align-items: center; gap: 8px; }
+.stp .num { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; background: var(--card-2); color: var(--text-3); border: 1px solid var(--border-soft); flex-shrink: 0; }
+.stp.active .num, .stp.done .num { background: var(--grad-gold); color: var(--brand-brown); border-color: transparent; }
+.stp .lbl { font-size: 12.5px; color: var(--text-3); white-space: nowrap; }
+.stp.active .lbl { color: var(--text); font-weight: 600; }
+.stp-bar { height: 2px; flex: 1; min-width: 12px; background: var(--border-soft); border-radius: 2px; }
+.stp-bar.done { background: var(--brand-gold); }
+
+/* ---- segmented toggle ---- */
+.seg2 { display: inline-flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.seg2 button { padding: 8px 20px; font-size: 13px; font-weight: 600; color: var(--text-2); }
+.seg2 button.active { background: var(--grad-gold); color: var(--brand-brown); }
+
+/* ---- photos ---- */
+.dropzone { border: 2px dashed var(--border); border-radius: 14px; padding: 26px; text-align: center; color: var(--text-3); cursor: pointer; transition: border-color var(--t-fast); }
+.dropzone:hover { border-color: var(--brand-gold); }
+.dropzone .icn { width: 28px; height: 28px; margin: 0 auto 8px; }
+.photo-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+.pslot { aspect-ratio: 1; border-radius: 12px; border: 1px solid var(--border-soft); background: var(--card-2); display: grid; place-content: center; justify-items: center; gap: 5px; color: var(--text-3); font-size: 11px; text-align: center; }
+.pslot .icn { width: 20px; height: 20px; }
+.pslot.req-slot { border-color: rgba(240,165,60,.4); }
+
+.declaration { display: flex; gap: 11px; align-items: flex-start; padding: 14px; border-radius: 12px; background: var(--card-2); border: 1px solid var(--border-soft); margin-top: 16px; font-size: 13px; color: var(--text-2); }
+.declaration input { width: 17px; height: 17px; margin-top: 1px; accent-color: var(--brand-gold); flex-shrink: 0; }
+.wz-success { text-align: center; padding: 14px 8px; }
+.wz-success .big { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 16px; background: var(--success-tint); color: var(--success); }
+.wz-success .big .icn { width: 32px; height: 32px; }
+
+/* ---- passport (always light, print-friendly) ---- */
+.passport-sheet { background: #fdfbf6; color: #241a0c; border-radius: 12px; overflow: hidden; border: 1px solid #e9dec9; }
+.pp-head { background: linear-gradient(135deg, #F0E11E, #F0A53C 50%, #C3692D); color: #2a1a08; padding: 16px 20px; display: flex; align-items: center; gap: 13px; }
+.pp-head img { width: 46px; height: 46px; border-radius: 50%; }
+.pp-head .t1 { font-family: var(--font-display); font-weight: 800; font-size: 16px; line-height: 1.1; }
+.pp-head .t2 { font-size: 12px; opacity: .8; }
+.pp-head .pp-ver { margin-inline-start: auto; font-size: 11px; text-align: end; opacity: .85; }
+.pp-body { padding: 18px 20px; }
+.pp-top { display: flex; gap: 16px; align-items: center; padding-bottom: 16px; border-bottom: 1px dashed #ddcfb4; }
+.pp-photo { width: 84px; height: 84px; border-radius: 12px; background: linear-gradient(135deg, #f6e7c8, #e9d4a8); display: grid; place-items: center; color: #b88a3a; flex-shrink: 0; }
+.pp-photo .icn { width: 44px; height: 44px; }
+.pp-name { font-family: var(--font-display); font-weight: 700; font-size: 20px; }
+.pp-name .ar { font-family: var(--font-arabic); font-weight: 500; font-size: 15px; color: #6b5836; margin-inline-start: 8px; }
+.pp-reg { font-variant-numeric: tabular-nums; color: #6b5836; font-size: 13px; margin-top: 3px; }
+.pp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; padding: 16px 0; }
+.pp-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+.pp-kv label { display: block; font-size: 10px; letter-spacing: .5px; text-transform: uppercase; color: #9a824f; margin-bottom: 2px; }
+.pp-kv .v { font-size: 13.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.pp-sec-t { font-size: 11px; letter-spacing: .5px; text-transform: uppercase; color: #9a824f; font-weight: 700; margin: 4px 0 8px; }
+.pp-vax { display: flex; flex-wrap: wrap; gap: 7px; }
+.pp-chip { font-size: 11.5px; padding: 3px 9px; border-radius: 99px; background: #f1e7d2; color: #5b4a2a; display: inline-flex; align-items: center; gap: 5px; }
+.pp-chip.ok::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #27AE60; }
+.pp-chip.warn::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #E67E22; }
+.pp-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0 0; border-top: 1px dashed #ddcfb4; }
+.pp-qr { background: #fff; padding: 6px; border-radius: 8px; }
+.pp-elig { font-size: 13px; font-weight: 700; color: #1c7a43; display: flex; align-items: center; gap: 6px; }
+.pp-dna { font-size: 12px; color: #6b5836; }
+
+@media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .stp .lbl { display: none; } }
+
+/* ===================== PRINT ===================== */
+@media print {
+  body * { visibility: hidden !important; }
+  #ascModal, #ascModal * { visibility: hidden !important; }
+  .passport-sheet, .passport-sheet * { visibility: visible !important; }
+  .modal-overlay { position: static !important; background: none !important; padding: 0 !important; backdrop-filter: none !important; }
+  .modal { box-shadow: none !important; border: none !important; max-height: none !important; width: 100% !important; }
+  .modal-head, .modal-foot { display: none !important; }
+  .modal-body { padding: 0 !important; overflow: visible !important; }
+  .passport-sheet { position: absolute; inset: 0; margin: 0; border: none; border-radius: 0; }
+}

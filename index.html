@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arabian Saluki Center — Registry System</title>
+  <meta name="description" content="Saluki Registration System dashboard — Arabian Saluki Center, Emirates Falconers Club.">
+  <link rel="icon" href="logo.png">
+
+  <!-- Styles (all local — fully offline) -->
+  <link rel="stylesheet" href="assets/css/fonts.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/screens.css">
+  <link rel="stylesheet" href="assets/css/modals.css">
+  <link rel="stylesheet" href="assets/css/login.css">
+
+  <!-- The sign-in gate is always the landing screen and uses the LIGHT theme.
+       Signing in switches to the DARK dashboard (see login.js). -->
+  <script>document.documentElement.setAttribute('data-theme', 'light');</script>
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <div class="app">
+    <!-- ============================= SIDEBAR ============================= -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-head">
+        <div class="brand">
+          <img class="brand-badge" src="logo.png" alt="Arabian Saluki Center" width="40" height="40">
+          <div class="brand-text">
+            <span class="brand-name">Arabian Saluki</span>
+            <span class="brand-sub" data-i18n="brand.sub">Registry System</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <div class="nav-group">
+          <div class="nav-group-title" data-i18n="group.main">Main</div>
+          <a href="#" class="nav-link active" data-nav="overview"><span class="icn" data-icon="grid"></span><span data-i18n="nav.overview">Overview</span></a>
+          <a href="#" class="nav-link" data-nav="analytics"><span class="icn" data-icon="chart"></span><span data-i18n="nav.analytics">Analytics</span></a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title" data-i18n="group.registry">Registry</div>
+          <a href="#" class="nav-link" data-nav="registry"><span class="icn" data-icon="list"></span><span data-i18n="nav.registry">Saluki Registry</span></a>
+          <a href="#" class="nav-link" data-nav="profile"><span class="icn" data-icon="id"></span><span data-i18n="nav.profile">Saluki Profile</span></a>
+          <a href="#" class="nav-link" data-nav="owners"><span class="icn" data-icon="users"></span><span data-i18n="nav.owners">Owners</span></a>
+          <a href="#" class="nav-link" data-nav="queue"><span class="icn" data-icon="inbox"></span><span data-i18n="nav.queue">Registration Queue</span><span class="nav-badge">54</span></a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title" data-i18n="group.programs">Programs</div>
+          <a href="#" class="nav-link" data-nav="competitions"><span class="icn" data-icon="trophy"></span><span data-i18n="nav.competitions">Competitions</span></a>
+          <a href="#" class="nav-link" data-nav="breeder"><span class="icn" data-icon="lineage"></span><span data-i18n="nav.breeder">Breeder Registry</span></a>
+          <a href="#" class="nav-link" data-nav="dna"><span class="icn" data-icon="dna"></span><span data-i18n="nav.dna">DNA Verification</span></a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title" data-i18n="group.community">Community</div>
+          <a href="#" class="nav-link" data-nav="members"><span class="icn" data-icon="users"></span><span data-i18n="nav.members">Members</span></a>
+          <a href="#" class="nav-link" data-nav="support"><span class="icn" data-icon="ticket"></span><span data-i18n="nav.support">Support</span><span class="nav-badge">3</span></a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title" data-i18n="group.engage">Engagement</div>
+          <a href="#" class="nav-link" data-nav="content"><span class="icn" data-icon="image"></span><span data-i18n="nav.content">App Content</span></a>
+          <a href="#" class="nav-link" data-nav="notifications"><span class="icn" data-icon="bell"></span><span data-i18n="nav.notifications">Notifications</span></a>
+        </div>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="user-chip">
+          <div class="avatar">AM</div>
+          <div class="user-meta">
+            <span class="user-name">Ahmed Al M.</span>
+            <span class="user-role" data-i18n="role.superadmin">Super Admin</span>
+          </div>
+          <button class="btn-ghost" id="signOut" style="margin-inline-start:auto;padding:8px;border-radius:10px" aria-label="Sign out"><span class="icn" data-icon="logout"></span></button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============================= MAIN ============================= -->
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu"><span class="icn" data-icon="menu"></span></button>
+          <div class="page-titles">
+            <span class="page-title" id="pageTitle" data-i18n="top.title">Dashboard Overview</span>
+            <span class="page-sub" id="dateNow">&nbsp;</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="search-box">
+            <span class="icn" data-icon="search"></span>
+            <input id="globalSearch" type="text" data-i18n-ph="search.ph" placeholder="Search…" aria-label="Search">
+            <kbd>/</kbd>
+          </div>
+          <button class="icon-btn" id="themeBtn" aria-label="Toggle theme"></button>
+          <button class="icon-btn" id="notifBtn" data-goto="notifications" aria-label="Notifications"><span class="icn" data-icon="bell"></span><span class="dot"></span></button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="content-inner">
+
+          <!-- ===================== OVERVIEW ===================== -->
+          <section class="view active" id="view-overview">
+
+            <div class="page-intro">
+              <div>
+                <h1 data-i18n="page.h">Welcome back, Ahmed</h1>
+                <p data-i18n="page.p">Here is what is happening across the Arabian Saluki Center registry today.</p>
+              </div>
+              <div class="flex gap-8 wrap">
+                <button class="btn btn-gold" data-open="register"><span class="icn" data-icon="plus"></span><span data-i18n="qa.register">Register Saluki</span></button>
+                <button class="btn btn-outline" data-goto="queue"><span class="icn" data-icon="inbox"></span><span data-i18n="qa.review">Review Queue</span></button>
+                <button class="btn btn-outline" data-open="event"><span class="icn" data-icon="calplus"></span><span data-i18n="qa.event">Add Event</span></button>
+                <button class="btn btn-outline" data-toast="Exporting report…" data-toast-icon="download"><span class="icn" data-icon="download"></span><span data-i18n="qa.export">Export Report</span></button>
+              </div>
+            </div>
+
+            <!-- KPI cards -->
+            <div class="kpi-grid">
+              <div class="card kpi hoverable">
+                <div class="kpi-head"><div class="kpi-icon"><span class="icn" data-icon="paw"></span></div><span class="trend up"><span class="icn" data-icon="arrowup"></span>12%</span></div>
+                <div class="kpi-value" data-count="1284">0</div>
+                <div class="kpi-label" data-i18n="kpi.salukis">Total Registered Salukis</div>
+                <div data-spark="salukis"></div>
+              </div>
+              <div class="card kpi hoverable">
+                <div class="kpi-head"><div class="kpi-icon"><span class="icn" data-icon="clock"></span></div><span class="trend down"><span class="icn" data-icon="arrowdn"></span>8%</span></div>
+                <div class="kpi-value" data-count="54">0</div>
+                <div class="kpi-label" data-i18n="kpi.pending">Pending Approvals</div>
+                <div data-spark="pending"></div>
+              </div>
+              <div class="card kpi hoverable">
+                <div class="kpi-head"><div class="kpi-icon"><span class="icn" data-icon="users"></span></div><span class="trend up"><span class="icn" data-icon="arrowup"></span>6%</span></div>
+                <div class="kpi-value" data-count="231">0</div>
+                <div class="kpi-label" data-i18n="kpi.members">Active Members</div>
+                <div data-spark="members"></div>
+              </div>
+              <div class="card kpi hoverable">
+                <div class="kpi-head"><div class="kpi-icon"><span class="icn" data-icon="calendar"></span></div><span class="trend flat">Jun 15</span></div>
+                <div class="kpi-value" data-count="5">0</div>
+                <div class="kpi-label" data-i18n="kpi.events">Upcoming Events</div>
+                <div data-spark="events"></div>
+              </div>
+              <div class="card kpi hoverable">
+                <div class="kpi-head"><div class="kpi-icon"><span class="icn" data-icon="checkc"></span></div><span class="trend up"><span class="icn" data-icon="arrowup"></span>9%</span></div>
+                <div class="kpi-value" data-count="142">0</div>
+                <div class="kpi-label" data-i18n="kpi.approved">Approved This Month</div>
+                <div data-spark="approved"></div>
+              </div>
+              <div class="card kpi hoverable">
+                <div class="kpi-head"><div class="kpi-icon"><span class="icn" data-icon="shield"></span></div><span class="trend warn"><span class="icn" data-icon="alert"></span>30d</span></div>
+                <div class="kpi-value" data-count="18">0</div>
+                <div class="kpi-label" data-i18n="kpi.certs">Expiring Health Certs</div>
+                <div data-spark="certs"></div>
+              </div>
+            </div>
+
+            <!-- Charts row A -->
+            <div class="grid" style="margin-bottom:var(--gutter)">
+              <div class="sp-8 card hoverable">
+                <div class="card-head">
+                  <div>
+                    <div class="card-title" data-i18n="card.trend">Registrations Over Time</div>
+                    <div class="card-sub" data-i18n="card.trend.sub">New approved Salukis · last 12 months</div>
+                  </div>
+                  <span class="trend up"><span class="icn" data-icon="arrowtr"></span>8.2%</span>
+                </div>
+                <div class="chart-box"><canvas id="chartTrend"></canvas></div>
+              </div>
+              <div class="sp-4 card hoverable">
+                <div class="card-head"><div class="card-title" data-i18n="card.status">Registration Status</div></div>
+                <div class="donut-wrap chart-box sm"><canvas id="chartStatus"></canvas></div>
+                <div class="legend">
+                  <div class="legend-item"><span class="legend-dot" style="background:var(--success)"></span><span>Approved</span><span class="val">1,198</span></div>
+                  <div class="legend-item"><span class="legend-dot" style="background:var(--warning)"></span><span>Pending</span><span class="val">54</span></div>
+                  <div class="legend-item"><span class="legend-dot" style="background:var(--error)"></span><span>Rejected</span><span class="val">32</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Charts row B -->
+            <div class="grid" style="margin-bottom:var(--gutter)">
+              <div class="sp-5 card hoverable">
+                <div class="card-head">
+                  <div class="card-title" data-i18n="card.emirate">Registrations by Emirate</div>
+                  <a class="card-link" data-goto="analytics"><span data-i18n="see.all">View all</span><span class="icn" data-icon="chevron"></span></a>
+                </div>
+                <div class="chart-box sm"><canvas id="chartEmirate"></canvas></div>
+              </div>
+              <div class="sp-4 card hoverable">
+                <div class="card-head"><div class="card-title" data-i18n="card.breed">Breed Distribution</div></div>
+                <div class="donut-wrap chart-box sm"><canvas id="chartBreed"></canvas></div>
+                <div class="legend">
+                  <div class="legend-item"><span class="legend-dot" style="background:var(--brand-gold)"></span><span>Smooth-coated</span><span class="val">68%</span></div>
+                  <div class="legend-item"><span class="legend-dot" style="background:var(--brand-bronze)"></span><span>Feathered</span><span class="val">32%</span></div>
+                </div>
+              </div>
+              <div class="sp-3 card hoverable">
+                <div class="card-head"><div class="card-title" data-i18n="card.gender">By Gender</div></div>
+                <div class="progress-row">
+                  <div class="progress-top"><span data-i18n="lbl.male">Male</span><b>54%</b></div>
+                  <div class="progress-track"><div class="progress-fill" data-val="54"></div></div>
+                </div>
+                <div class="progress-row">
+                  <div class="progress-top"><span data-i18n="lbl.female">Female</span><b>46%</b></div>
+                  <div class="progress-track"><div class="progress-fill alt" data-val="46"></div></div>
+                </div>
+                <div class="divider"></div>
+                <div class="flex between" style="font-size:13px"><span class="muted">DNA verified</span><b style="font-family:var(--font-display)">38%</b></div>
+                <div class="flex between mt-12" style="font-size:13px"><span class="muted">Competitions ’26</span><b style="font-family:var(--font-display)">8</b></div>
+              </div>
+            </div>
+
+            <!-- Row C -->
+            <div class="grid">
+              <div class="sp-7 card hoverable">
+                <div class="card-head">
+                  <div class="card-title" data-i18n="card.activity">Recent Activity</div>
+                  <a class="card-link" data-goto="notifications"><span data-i18n="see.all">View all</span><span class="icn" data-icon="chevron"></span></a>
+                </div>
+                <div class="feed" id="feedList"></div>
+              </div>
+              <div class="sp-5 card hoverable">
+                <div class="card-head">
+                  <div class="card-title" data-i18n="card.events">Upcoming Events</div>
+                  <a class="card-link" data-goto="competitions"><span data-i18n="see.all">View all</span><span class="icn" data-icon="chevron"></span></a>
+                </div>
+                <div id="eventList"></div>
+              </div>
+            </div>
+
+          </section>
+
+          <!-- ===================== PLACEHOLDER (unbuilt screens) ===================== -->
+          <section class="view" id="view-placeholder">
+            <div class="placeholder">
+              <div class="ph-inner">
+                <div class="ph-icon"><span class="icn" data-icon="spark"></span></div>
+                <div><span class="badge gold ph-badge" data-i18n="ph.badge">In the build queue</span></div>
+                <div class="ph-title"><span id="phName">Screen</span></div>
+                <p class="ph-text" data-i18n="ph.text">This module is queued in the build plan.</p>
+                <button class="btn btn-gold" id="phBack"><span class="icn" data-icon="grid"></span><span data-i18n="ph.back">Back to Overview</span></button>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ============================= SIGN-IN GATE ============================= -->
+  <div id="login">
+    <button class="icon-btn login-theme" id="loginTheme" aria-label="Toggle theme"></button>
+    <div class="login-card">
+      <div class="login-head">
+        <img class="login-logo" src="logo.png" alt="Arabian Saluki Center">
+        <div class="login-title">Arabian Saluki Center</div>
+        <div class="login-sub">Registry System</div>
+      </div>
+      <form id="loginForm" autocomplete="off">
+        <div class="login-welcome">Sign in to your account</div>
+        <div class="lf-field">
+          <label for="luser">Username</label>
+          <div class="lf-input"><span class="icn" data-icon="users"></span><input id="luser" type="text" value="admin" autocomplete="username"></div>
+        </div>
+        <div class="lf-field">
+          <label for="lpass">Password</label>
+          <div class="lf-input"><span class="icn" data-icon="lock"></span><input id="lpass" type="password" value="saluki2026" autocomplete="current-password"><button type="button" class="lf-eye" id="lpassToggle" aria-label="Show password"><span class="icn" data-icon="eye"></span></button></div>
+        </div>
+        <div class="lf-row">
+          <label class="lf-remember"><input type="checkbox" checked> Remember me</label>
+          <a class="lf-forgot" id="lforgot" href="#">Forgot password?</a>
+        </div>
+        <div class="lf-error" id="lerror"></div>
+        <button type="submit" class="btn btn-gold lf-submit">Sign In <span class="icn" data-icon="arrowtr"></span></button>
+        <div class="lf-hint">Demo credentials — <b>admin</b> / <b>saluki2026</b></div>
+      </form>
+    </div>
+    <div class="login-foot">Arabian Saluki Center · Emirates Falconers Club</div>
+  </div>
+
+  <div class="toast-wrap" id="toast"></div>
+
+  <!-- Scripts -->
+  <script src="assets/vendor/chart.umd.min.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/charts.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/modals.js"></script>
+  <script src="assets/js/login.js"></script>
+  <script src="assets/js/views/registry.js"></script>
+  <script src="assets/js/views/profile.js"></script>
+  <script src="assets/js/views/owners.js"></script>
+  <script src="assets/js/views/owner.js"></script>
+  <script src="assets/js/views/queue.js"></script>
+  <script src="assets/js/views/competitions.js"></script>
+  <script src="assets/js/views/breeder.js"></script>
+  <script src="assets/js/views/dna.js"></script>
+  <script src="assets/js/views/analytics.js"></script>
+  <script src="assets/js/views/members.js"></script>
+  <script src="assets/js/views/notifications.js"></script>
+  <script src="assets/js/views/content.js"></script>
+  <script src="assets/js/views/support.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

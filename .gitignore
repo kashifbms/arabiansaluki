@@ -1,0 +1,12 @@
+# Internal — do NOT publish (contains pricing / proposal details)
+Saluki_Registration_System_Master_Spec.md
+
+# Editor / tooling config
+.claude/
+
+# Windows "downloaded from the internet" artifacts (alternate data streams)
+*Zone.Identifier
+
+# OS junk
+.DS_Store
+Thumbs.db
