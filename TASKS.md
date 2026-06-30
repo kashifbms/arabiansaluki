@@ -27,7 +27,7 @@
 ## 1 · Screens (14 total)
 - ✅ **Overview / Home** — KPI cards, charts (trend/emirate/breed/status), activity feed, upcoming events, quick actions
 - ✅ **Saluki Registry** — search + 4 filters + column sort + pagination, status/colour/DNA cells, row → profile, Register/Export
-- ✅ **Saluki Profile** — 4 tabs (Info / Medical / Competitions / Pedigree), QR ID card, pedigree tree, performance chart, passport button; graceful empty-states for sparse records
+- ✅ **Saluki Profile** — 4 tabs (Info / Medical / Competitions / Pedigree), QR ID card, pedigree tree, performance chart, passport button; graceful empty-states for sparse records; **review-reason banner + Review Activity timeline with comments** for rejected/suspended/info-required registrations
 - ✅ **Owners** + **Owner Profile** (Module 2) — directory with search/filter; profile shows identity & contact, **Emirates ID (masked PII + reveal-with-audit)**, ID-document verification tiles, and linked Salukis (cross-linked with Saluki Profile)
 - ✅ **Registration Queue** — status filter tabs + live counts, review list, slide-in drawer with document checklist & photos, Approve / Request Info / Reject (updates status)
 - ✅ **Competitions** — events calendar cards, championship leaderboard (medal ranks), participation-by-type chart

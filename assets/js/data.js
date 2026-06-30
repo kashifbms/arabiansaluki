@@ -285,3 +285,37 @@ ASC.findOwner = function (key) {
 ASC.maskEid = function (eid) {
   return (eid || '').replace(/^(\d{3})-\d{4}-\d{7}-(\d)$/, '$1-••••-•••••••-$2');
 };
+
+/* ---- Review reasons / comment trail for non-approved registrations ---- */
+ASC.data.reviews = {
+  'ASC-2026-00004': {   // Noor Al Sahra — Rejected
+    reason: 'Incomplete documentation — microchip certificate could not be verified',
+    by: 'Sara Al Mheiri', role: 'Registration Officer', date: '02 May 2026',
+    notes: 'The microchip number on the submitted certificate (784098100240118) could not be matched against an accredited registry during inspection, and the veterinary health certificate was missing. The owner has been notified to re-submit valid documents before the registration can be reconsidered.',
+    timeline: [
+      { t: 'Registration submitted', by: 'Khalid Al Mazrouei (owner)', time: '28 Apr 2026' },
+      { t: 'Documents under review', by: 'Sara Al Mheiri · Registration Officer', time: '30 Apr 2026' },
+      { t: 'Additional information requested', by: 'Sara Al Mheiri', time: '01 May 2026' },
+      { t: 'Rejected — documentation could not be verified', by: 'Sara Al Mheiri · Registration Officer', time: '02 May 2026' }
+    ]
+  },
+  'ASC-2026-00008': {   // Warda Al Nakheel — Info Required
+    reason: 'A current vaccination record is required',
+    by: 'Sara Al Mheiri', role: 'Registration Officer', date: '28 Jun 2026',
+    notes: 'The submitted vaccination record has expired. Please upload an up-to-date vaccination certificate from an accredited veterinarian to continue the registration.',
+    timeline: [
+      { t: 'Registration submitted', by: 'Saeed Al Nuaimi (owner)', time: '27 Jun 2026' },
+      { t: 'Additional information requested', by: 'Sara Al Mheiri · Registration Officer', time: '28 Jun 2026' }
+    ]
+  },
+  'ASC-2026-00014': {   // Mansour Al Dhaid — Suspended
+    reason: 'Suspended pending an ownership dispute',
+    by: 'Hamad Al Junaibi', role: 'Club Administrator', date: '14 Oct 2025',
+    notes: 'A third party has contested ownership of this Saluki. The registration is temporarily suspended until the dispute is resolved and supporting documentation is provided.',
+    timeline: [
+      { t: 'Registration approved', by: 'Hamad Al Junaibi · Club Administrator', time: '12 Oct 2025' },
+      { t: 'Ownership dispute filed', by: 'System', time: '13 Oct 2025' },
+      { t: 'Registration suspended', by: 'Hamad Al Junaibi · Club Administrator', time: '14 Oct 2025' }
+    ]
+  }
+};

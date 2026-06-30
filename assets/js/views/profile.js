@@ -30,6 +30,37 @@ ASC.views.profile = function (root, payload) {
 
   const kv = (l, v, mono) => '<div class="kv"><label>' + l + '</label><div class="v' + (mono ? ' mono' : '') + '">' + v + '</div></div>';
 
+  /* ---------------- Review reason / comments ---------------- */
+  function getReview() {
+    if (!ASC.data.reviews) ASC.data.reviews = {};
+    if (ASC.data.reviews[s.reg]) return ASC.data.reviews[s.reg];
+    if (s.status === 'Pending' || s.status === 'Pending Review') {
+      ASC.data.reviews[s.reg] = { reason: 'Awaiting admin review', by: 'Registration Queue', role: '', date: '—',
+        notes: 'This registration has been submitted and is in the queue awaiting review by a Club Administrator.',
+        timeline: [{ t: 'Registration submitted', by: s.owner + ' (owner)', time: s.registered }] };
+      return ASC.data.reviews[s.reg];
+    }
+    return null;
+  }
+  const tlHTML = (tl) => tl.map((t) => '<div class="tl-item"><div class="tl-date">' + t.time + '</div><div class="tl-title">' + t.t + '</div><div class="tl-note">' + t.by + '</div></div>').join('');
+  function reviewBanner() {
+    if (s.status === 'Approved') return '';
+    const r = getReview(); if (!r) return '';
+    const amber = s.status === 'Info Required' || s.status === 'Pending' || s.status === 'Pending Review';
+    const icon = s.status === 'Info Required' ? 'inbox' : s.status === 'Suspended' ? 'shield' : amber ? 'clock' : 'close';
+    const title = s.status === 'Rejected' ? 'Registration Rejected' : s.status === 'Suspended' ? 'Registration Suspended' : s.status === 'Info Required' ? 'Additional Information Required' : 'Pending Review';
+    return '<div class="review-banner ' + (amber ? 'amber' : 'red') + '"><span class="rb-ic">' + ASC.icon(icon) + '</span><div class="rb-body">' +
+      '<div class="rb-title">' + title + '</div><div class="rb-reason">' + r.reason + '</div>' +
+      (r.notes ? '<div class="rb-notes">' + r.notes + '</div>' : '') +
+      '<div class="rb-meta"><span class="icn" data-icon="users"></span>' + r.by + (r.role ? ' · ' + r.role : '') + ' · ' + r.date + '</div></div></div>';
+  }
+  function reviewActivity() {
+    const r = getReview(); if (!r || !r.timeline) return '';
+    return '<div class="card mt-16"><div class="card-head"><div class="card-title">Review Activity</div></div>' +
+      '<div class="timeline" id="pfTimeline">' + tlHTML(r.timeline) + '</div>' +
+      '<div class="reply-box" style="margin-top:16px"><textarea id="pfComment" placeholder="Add a review comment…"></textarea><button class="btn btn-gold" id="pfCommentBtn"><span class="icn" data-icon="send"></span></button></div></div>';
+  }
+
   /* ---------------- Info panel ---------------- */
   function infoPanel() {
     const id =
@@ -65,7 +96,7 @@ ASC.views.profile = function (root, payload) {
     return '<div class="grid">' +
       '<div class="sp-8">' + id + '</div>' +
       '<div class="sp-4"><div class="stack">' + idCard + '<div class="mt-16">' + ownerCard + '</div></div></div>' +
-      '</div>';
+      '</div>' + reviewActivity();
   }
 
   /* ---------------- Medical panel ---------------- */
@@ -171,6 +202,7 @@ ASC.views.profile = function (root, payload) {
         '<button class="btn btn-outline" id="pfTransfer"><span class="icn" data-icon="transfer"></span>Transfer Ownership</button>' +
       '</div>' +
     '</div></div>' +
+    reviewBanner() +
     '<div class="tabs">' +
       '<button class="tab active" data-tab="info"><span class="icn" data-icon="id"></span>Info</button>' +
       '<button class="tab" data-tab="med"><span class="icn" data-icon="vet"></span>Medical</button>' +
@@ -195,4 +227,11 @@ ASC.views.profile = function (root, payload) {
   root.querySelector('#pfTransfer').addEventListener('click', () => ASC.openTransfer(s.reg));
   const ownBtn = root.querySelector('#pfOwner');
   if (ownBtn) ownBtn.addEventListener('click', () => ASC.go('owner', 'nav.owner', { id: owner.id }));
+  const cBtn = root.querySelector('#pfCommentBtn');
+  if (cBtn) cBtn.addEventListener('click', () => {
+    const ta = root.querySelector('#pfComment'); const v = ta.value.trim(); if (!v) return;
+    const r = getReview(); r.timeline.push({ t: v, by: 'Ahmed Al M. · Super Admin', time: 'just now' });
+    root.querySelector('#pfTimeline').innerHTML = tlHTML(r.timeline); ta.value = '';
+    ASC.toast('Comment added to review', 'message');
+  });
 };
